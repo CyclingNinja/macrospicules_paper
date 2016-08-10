@@ -671,6 +671,79 @@ for i, im in enumerate(ims):
 
 \end{pycode}
 
+\begin{pycode}[Temp difference]
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.collections import LineCollection
+from matplotlib import colors
+
+import sunpy.map
+from sunpy.image import slit
+
+from astropy.io import fits
+import astropy.units as u
+
+from glob import glob
+
+files = glob('/storage2/temperature_maps/data/full_gauss/*.fits')
+files.sort()
+
+def proc_file(x):
+    with fits.open(x, memmap=True) as f:
+        data = f[0].data[..., 0]
+        header = dict(f[0].header)
+        m = sunpy.map.Map((data, header))
+        m.plotsettings = {'cmap':'coolwarm'}
+        crop = m.submap((857.9, 957.94)*u.arcsec,
+                 (-197.92, -297.92)*u.arcsec)
+    return crop 
+
+
+submaps = []
+for afile in files[28:40]:
+    temp = proc_file(afile)
+    submaps.append(temp)
+
+mc = sunpy.map.Map(submaps, cube=True)
+
+
+image_1 = slit.slit(mc, [909, 911]*u.arcsec, [-245, -242]*u.arcsec, 1, -1, +1)
+
+temp_values = image_1[0]
+temp_inds = image_1[1]
+
+
+xy_slit = [np.array(zip(range(len(temp_inds)), temp_values[0,:,i])) for i in range(temp_values.shape[2])]
+
+def truncate_colormap(cmap, minval=0.0, maxval=1.0, n=100):
+    new_cmap = colors.LinearSegmentedColormap.from_list(
+        'trunc({n},{a:.2f},{b:.2f})'.format(n=cmap.name, a=minval, b=maxval),
+        cmap(np.linspace(minval, maxval, n)))
+    return new_cmap
+
+nmap = truncate_colormap(plt.get_cmap('Oranges'), 0.3, 1.0)
+
+line_segments = LineCollection(xy_slit,
+                               linewidths=0.25,
+                               linestyle='solid',
+                               cmap=nmap)
+
+line_segments.set_array(np.arange(len(temp_values[0,0,:])))
+
+fig, ax = plt.subplots()
+ax.add_collection(line_segments)
+ax_cb = fig.colorbar(line_segments)
+ax_cb.set_label('Time')
+ax.axis([0,5 , 6.4, 6.6])
+ax.set_title('Temperature over slit')
+ax.set_xlabel('Distance across slit')
+ax.set_ylabel('Temperature')
+plt.sci(line_segments)
+plt.draw()
+plt.show()
+
+\end{pycode}
+
 
 
 
