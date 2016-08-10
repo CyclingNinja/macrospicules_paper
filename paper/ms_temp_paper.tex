@@ -492,11 +492,6 @@ def truncate_colormap(cmap, minval=0.0, maxval=1.0, n=100):
         cmap(np.linspace(minval, maxval, n)))
     return new_cmap
 
-# # read in some datas
-# ha_files = glob('/storage2/jet/SST/*.npy')
-# ha_files.sort()
-# dop_files = glob('/storage2/jet/dop_arrs/*.npy')
-# dop_files.sort()
 
 dop_frames = [76,77,78,79,80,81,82,83,85]
 frame_numbers = np.arange(75,90)
@@ -676,7 +671,7 @@ for i, im in enumerate(ims):
 
 \end{pycode}
 
-\begin{pycode}[Temp difference]
+\begin{pycode}[jet_temp]
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.collections import LineCollection
@@ -692,6 +687,9 @@ from glob import glob
 
 files = glob('/storage2/temperature_maps/data/full_gauss/*.fits')
 files.sort()
+
+
+
 
 def proc_file(x):
     with fits.open(x, memmap=True) as f:
@@ -765,14 +763,35 @@ We have utilised multiple analysis techniques to build a comprehensive picture o
 From the observation of this feature, we can draw the following conclusions
 \begin{itemize}
 	\item{This particular feature is visible in H$\alpha$ and He II $30.4$, and thus, is inherently a chromospheric object.}
-	\item{The jet has two separate ejections of material.}
+	\item{The jet has two separate ejections of material. Reaching a maximum \emph{length} of $25$ Mm}
 	\item{The formation of the jet is observed to be similar to the standard jet formation mechanism.}
 	\item{The jet has a rotational component to its motion}
 \end{itemize}
 
 The feature is observed to extend to $12.6$ Mm in He II $30.4$ nm (and is only found to be shorter in H$\alpha$ due to moving out of the viewing field of view).
-Its lifetime is measured of to be $20$ mins and radial velocities are found to be
-This very much puts this feature in the ca
+Its lifetime is measured of to be $20$ mins and radial velocities are found to be maximised during the initial acceleration, and are of the order $50 - 60$ km$s^{-1}$ during the first acceleration of the feature.
+However the second acceleration of material proves awkward to measure accurately, however we estimate slightly higher maximum velocities, but similar averages over the extension upwards. 
+This very much puts this feature in the category of macrospicules, agreeing with the recent study by \cite{Bennett2015}.
+
+However the feature exhibits similar formation mechanisms as a standard jet following the pattern demonstrated in \cite{Shibata1992} and then built on by \cite{Moore2010}, who also presented the blowout jet mechanism.
+With the two visible bright points in the H$\alpha$ images which come to form an, all be it, long thin bright arch before forming the characteristic spire of a the standard jet.
+Unfortunatley, Hinode's XRT instrument was in a power down mode during the formation of this feature and RHESSI did not record the event, as such, we are missing crucial X-ray data.
+
+If an increase in the X-ray radiation were to be found, the question as to the categorisation of such a feature becomes important.
+Given that we observe several of the key indicators of a standard jet, could this not also be classified as a standard jet? 
+Inspite of this features relatively small size, this could be classified as an X-ray jet.
+However the question remains, is this a macrospicule?
+And if so, do we classify the feature as a macrospicule or a standard jet?
+
+One possible differentiator is the appearance in the higher coronal wavelengths.
+In this case, the jet appears as an absorption feature, against the brighter limb.
+This does not mean that the jet does not reach coronal temperatures, in $30.4$ nm the jet appears as absorption below the limb and as emission above it.
+We cannot conclusively say that the jet contributes to the coronal emission by visual inspection.
+
+Therefore, we propose that this is a standard jet, and as a community, we need to fully address the underlying physics of macrospicules.
+This is despite the ambiguity about its appearance in the coronal emission lines, but the underlying physics is enough to draw this conclusion.
+
+
 
 
 
