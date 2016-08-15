@@ -62,7 +62,7 @@ import matplotlib.pyplot as plt
 manager = texfigure.Manager(pytex, '../')
 \end{pythontexcustomcode}
 
-\title{Solar jet observed at the limb in SDO/SST}
+\title{Observation of the Torsional Motion of a Solar Jet at the Limb}
 \author{S.M.Bennett$^1$
 A.J.Leonard$^1$
 \and R. Erd{\'e}lyi$^{1,2}$}
@@ -71,6 +71,14 @@ A.J.Leonard$^1$
 
 
 \begin{abstract}
+We present observations of a jet event measured by multiple instruments on the $21$st of June $2012$ at the eastern solar limb.
+Utilising CRISP at the Swedish Solar Telescope (SST), the Atmospheric Imaging Assembly (AIA) on-board the Solar Dynamic Observatory (SDO) and the alternate view given by STEREO-A's EUVI instrument.
+We closely examine the evolution of the jet in extreme detail using CRISP and on a more global scale using the range of wavelengths available on AIA.
+The feature is clearly visible in the chromospheric lines of H$\alpha$ and He II $30.4$ nm, however, visibility does decrease as observations move up the corona.
+The jet extends to $12.6$ in length and follows the standard jet formation model.
+We develop a new method for the calculation of dopplergrams using the MCMC fitting method to adapt to the problems of multiple forms of emmision absorption lines at the limb.
+This reveals that the jet rotates first one way and then the other as a result of the unwinding of twist inherent in the emerging bipole.
+
 \end{abstract}
 
 \maketitle
@@ -230,8 +238,13 @@ Its appearance in Fig. X demonstrates that it is, in all likelihood an absorptio
 Evidently, the maximum extent of this feature is in SDO $30.4$ and maximises at $12.6$ Mm although the measurements in H$\alpha$ may exceed this were it to be fully visible.
 Interestingly, the length of the jet in the coronal lines does not get larger after the second injection on plasma occurs.
 This subsequent acceleration of plasma originates from the same location as that of the initial formation, and on the same scale as the first onset.
-However, this drives the tip of the jet even higher than the initial.
+However, this drives the tip of the jet even higher than the initial tip, measuring the velocity accurately is difficult, due to this acceleration is set against the previous bright material.
+An approximation using multiple image steps and using a difference delta produces an average of $46$ kms{^{-1}}, therefore we can infer that it reaches a higher maximum velocity than the first ejection.
 
+The feature is very thin, averaging $1.13$ Mm in H$\alpha$ and $0.787$ Mm in He II. 
+This result is unexpected, it certainly seems to contradict the cool core surrounded by a hot sheath model.
+However the errors on the measurement in SDO/AIA recordings are $\pm1.5$ Mm, when taking into account human measurement error and resolution of the instrument.
+Where as measurement error on the CRISP/SST images is $\pm0.0885$ Mm, thus, we are more inclined to believe the measurement according to CRISP.
 
 
 % need much more here
@@ -319,36 +332,36 @@ td_fig.caption = ""
 \end{figure}
 
 
-\begin{pycode}[SST_slit]
-from __future__ import print_function
-import numpy as np
-import sunpy.cm
-import matplotlib.pyplot as plt
-from astropy.visualization.mpl_normalize import ImageNormalize 
-from astropy import visualization
-
-norm=ImageNormalize(stretch=visualization.AsinhStretch(1))
-
-sst_slit_path = manager.data_file('2016-01-22 14:59:58.507931.npz')
-
-afile = np.load(sst_slit_path)
-data = afile['arr_2']
-
-fig = plt.figure(figsize=texfigure.figsize(pytex, figure_width_context='textwidth'))
-plt.imshow(np.rot90(data[2])[::-1, 100:], cmap='viridis', aspect='auto', origin='lower', norm=norm)
-plt.colorbar()
-plt.xlabel('Time in SST cadence (7.7 s)')
-plt.ylabel('Distance along the slit')
-sst_slit_fig = manager.save_figure('sst-slit', fig)
-sst_slit_fig.figure_env_name = r'figure*'
-sst_slit_fig.figure_width = r'\textwidth'
-sst_slit_fig.placement = 't'
-sst_slit_fig.caption = r'CRISP/SST H$\alpha$ core line slit analysis.'
-
-print(sst_slit_fig.repr_figure(), file=sys.stderr)
-\end{pycode}
-
-\py[SST_slit]|sst_slit_fig|
+%\begin{pycode}[SST_slit]
+%from __future__ import print_function
+%import numpy as np
+%import sunpy.cm
+%import matplotlib.pyplot as plt
+%from astropy.visualization.mpl_normalize import ImageNormalize 
+%from astropy import visualization
+%
+%norm=ImageNormalize(stretch=visualization.AsinhStretch(1))
+%
+%sst_slit_path = manager.data_file('2016-01-22 14:59:58.507931.npz')
+%
+%afile = np.load(sst_slit_path)
+%data = afile['arr_2']
+%
+%fig = plt.figure(figsize=texfigure.figsize(pytex, figure_width_context='textwidth'))
+%plt.imshow(np.rot90(data[2])[::-1, 100:], cmap='viridis', aspect='auto', origin='lower', norm=norm)
+%plt.colorbar()
+%plt.xlabel('Time in SST cadence (7.7 s)')
+%plt.ylabel('Distance along the slit')
+%sst_slit_fig = manager.save_figure('sst-slit', fig)
+%sst_slit_fig.figure_env_name = r'figure*'
+%sst_slit_fig.figure_width = r'\textwidth'
+%sst_slit_fig.placement = 't'
+%sst_slit_fig.caption = r'CRISP/SST H$\alpha$ core line slit analysis.'
+%
+%print(sst_slit_fig.repr_figure(), file=sys.stderr)
+%\end{pycode}
+%
+%\py[SST_slit]|sst_slit_fig|
 
 
 
@@ -455,7 +468,9 @@ By the last panel at $07:39:16$, the feature has returned to a 'neutral' state, 
 
 % this section needs rewriting
 The velocity values given here are slow compared to those presented in previous works, however, we believe these to be accurate, and attribute this to the smalls scale of the initial loop.
-A wider loop would produce a greater radius for the plasma to rotate around, and therefore a greater angular velocity.% some questionable physics going on here
+A larger scale loop would mean that the magnetic tension would be greater, and hence, experience greater restoring force, inducing higher velocities.
+
+  
 
 
 
@@ -611,7 +626,7 @@ gs.tight_layout(fig, w_pad=0.2, pad=4)
 dop_grid = manager.save_figure('dop-exam', fig)
 dop_grid.figure_width = r'\textwidth'
 dop_grid.placement = 't'
-dop_grid.caption = ''
+dop_grid.caption = 'Above is the result of the dopplergram processing during the evolution of the second ejection of plasma starting at $07:37:00$'
 
 
 \end{pycode}
@@ -634,12 +649,13 @@ Supporting this hypothesis is that these images were recorded in the 'second pha
 As such, it is possible that these columns are a result of plasma being accelerated through the less dense atmosphere.
 
 One of the possible primary results of these instabilities is a dissipation of energy into the surrounding atmosphere, as such we might expect an increase in temperature of the surrounding atmosphere.
-To this end we will utilise the temperature estimation method described by \cite{Leonard2014}, which will be summarised briefly here.
-This method models the temperature in each pixel of a set of SDO/AIA images as a Differential Emission Measure (DEM) function, which is assumed to have a Gaussian shape.
-The temperature at which this function peaks is estimated by comparing the measured AIA emission to synthetic emission calculated from atomic data, the instrument wavelength response, and model DEMs peaking at a range of temperatures.
-The width and height of the Gaussian DEM are kept constant in the interest of reducing computation time.
-The width, representing the distribution of temperatures within a given pixel, is assumed to be narrow and is set at 0.1.
-The DEM is normalised such that the amplitude is 1, and other values in the calculation are also normalised as appropriate.
+To this end we will utilise the temperature calculation method highlighted in \cite{Leonard2014}.
+
+The authors use a Differential Emission Measure (DEM) to obtain a temperature response from the SDO/AIA measurements.
+The temperature response is a combination of the wavelength response from the instrument and the contribution function which describes the emission from a given temperature.
+When using such a scheme, we need to decide on a general DEM profile to be applied to all pixels.
+The method uses a Gaussian scan across the emission in each line and property of the Gaussian; mean, amplitude and width. 
+Utilising a narrow Gaussian seems to provide the most accurate values when compared to synthetic observations.
 
 \begin{pycode}[Bound_SST]
 import numpy as np
@@ -790,15 +806,15 @@ We cannot conclusively say that the jet contributes to the coronal emission by v
 Therefore, we propose that this is a standard jet, and as a community, we need to fully address the underlying physics of macrospicules.
 This is despite the ambiguity about its appearance in the coronal emission lines, but the underlying physics is enough to draw this conclusion.
 
-Lastly we find that the jet has a rotational component to its motion.
-We find that the jet has rotational velocities that maximise at the tip of the jet as the rotation initialises during the second acceleration of plasma.
-After this onset 'untwisting' at the tip of the macrospicule, the unwinding spreads down the feature until we observe a division 50/50 red/blue, with the RHS initially moving away from us.
+The spectroscopic readings, as show in \cref{dop_shift_sect}, demonstrates a small, but appreciable perturbation in the rotational velocity of the jet like feature.
+We find that the jet exhibits a torsional behaviour, demonstrating shifts indicating rotation in one direction and then the other.
+The magnitude of these velocities is, however, low.
+we conclude that this is a result of the very small source loop of the feature, although this of course needs further enquiry. 
 
-
-
-
-
-
+With respect to the features affect on the atmosphere, we find a boundary interaction between the jet and atmosphere in the H$\alpha$ images.
+This interaction has manifested as dark streaks at the every edges of the feature during the same phase in which the second event causes the acceleration of further plasma.
+It is also the phase in which we observe the torsional rotation of the jet.
+Whether these dark streaks are physically significant we cannot comment upon too confidently at this time, but they appear at the same time as the second acceleration and the onset of rotational behaviour, cannot merely be coincidence.
 
 
 
