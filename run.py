@@ -1,9 +1,10 @@
-#!/opt/miniconda/envs/sunpy-dev2/bin/python
+#!/usr/bin/env python2
 """
 Run code, analyis or build documents related to this repository
 
 Usage:
     run.py paper [--rerun=RR] [--view] [--viewer=PDF]
+    run.py thesis [--rerun=RR] [--view] [--viewer=PDF]
     run.py notebook [--port=P]
 
 Options:
@@ -30,9 +31,9 @@ arguments = docopt.docopt(__doc__, version='1.0.0')
 if arguments['--rerun'] is None:
     arguments['--rerun'] = 'errors'
 
-file_prefix = 'ms_temp_paper'
+file_prefix = 'paper'
 #Compile Paper
-if arguments['paper']:
+if arguments['paper'] or arguments['thesis']:
     os.chdir('paper')
     os.system('pdflatex -shell-escape -interaction=batchmode {}.tex'.format(file_prefix))
     os.system('pythontex --interpreter python:{} {}.tex --rerun={}'.format(sys.executable, file_prefix, arguments['--rerun']))
@@ -52,4 +53,4 @@ if arguments['notebook']:
         arguments['--port'] = 8899
     import IPython
     IPython.start_ipython(['notebook', '--notebook-dir=notebooks',
-                           '--port={}'.format(arguments['--port'])])
+    '--port={}'.format(arguments['--port'])])
