@@ -31,7 +31,7 @@ arguments = docopt.docopt(__doc__, version='1.0.0')
 if arguments['--rerun'] is None:
     arguments['--rerun'] = 'errors'
 
-file_prefix = 'paper'
+file_prefix = 'ms_temp_paper'
 #Compile Paper
 if arguments['paper'] or arguments['thesis']:
     os.chdir('paper')
